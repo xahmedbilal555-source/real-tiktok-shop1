@@ -56,3 +56,46 @@ html {
 .dark .shadow-2xl {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45) !important;
 }
+
+
+/* Accessibility and responsive polish */
+html { scroll-padding-top: 5rem; }
+:focus-visible { outline: 2px solid #60a5fa; outline-offset: 3px; }
+button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
+
+.dark #root > div {
+  background-color: #05070b !important;
+  background-image: none !important;
+  color: #f4f7ff;
+}
+.dark main > section:not(#home),
+.dark #payments,
+.dark #contact,
+.dark #verification {
+  background-color: #070c13 !important;
+  background-image: none !important;
+}
+.dark #accounts aside,
+.dark #accounts article,
+.dark #payments .rounded-lg,
+.dark #contact form,
+.dark #verification .rounded-lg {
+  background-color: #0b111b !important;
+  border-color: #263246 !important;
+}
+.dark .text-blue-700,
+.dark .text-blue-600 { color: #93c5fd !important; }
+.dark .bg-blue-50 { background-color: #111f35 !important; }
+.dark .hover\:bg-zinc-100:hover { background-color: #172235 !important; }
+
+@media (max-width: 360px) {
+  header nav { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+  header nav ul { gap: 0.4rem !important; }
+  header nav a { white-space: nowrap; }
+  header nav > a { max-width: 88px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
