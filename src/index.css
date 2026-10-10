@@ -58,41 +58,58 @@ html {
 }
 
 
-/* Accessibility and responsive polish */
-html { scroll-padding-top: 5rem; }
-:focus-visible { outline: 2px solid #60a5fa; outline-offset: 3px; }
-button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
+/* Mobile-first polish for Android Chrome, Samsung Internet, and iOS Safari. */
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; min-width: 320px; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+#root { min-height: 100vh; min-height: 100svh; }
+img, video, canvas, svg { max-width: 100%; }
+button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+button, input, textarea, select { font: inherit; }
+button, a { touch-action: manipulation; }
+:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
+.site-header { padding-top: env(safe-area-inset-top, 0px); }
+#home { min-height: 100vh; min-height: 100svh; scroll-margin-top: 5rem; }
+#home > div.relative { min-height: 100vh; min-height: 100svh; padding-bottom: max(3rem, env(safe-area-inset-bottom, 0px)); }
+#accounts, #payments, #verification, #contact { scroll-margin-top: 5.25rem; }
+#accounts input[type="search"], #contact input, #contact textarea { min-height: 44px; font-size: 16px; }
+#accounts button, #payments button, #verification button, #contact button { min-height: 44px; }
+#accounts article, #payments article, #contact form { min-width: 0; overflow-wrap: anywhere; }
+#accounts article a, #home a, #verification a { min-height: 44px; }
 
-.dark #root > div {
-  background-color: #05070b !important;
-  background-image: none !important;
-  color: #f4f7ff;
+@media (max-width: 767px) {
+  html { scroll-padding-top: 5rem; }
+  .site-header nav { min-height: 64px; }
+  main section:not(#home) > div, #accounts { padding-top: 3rem; padding-bottom: 3rem; }
+  #home > div.relative { align-items: center; padding-top: 7.25rem; padding-bottom: 3rem; }
+  #home h1 { max-width: 12ch; font-size: clamp(2rem, 9vw, 3.25rem); line-height: 1.08; overflow-wrap: anywhere; }
+  #home p { line-height: 1.65; }
+  #home a { width: 100%; max-width: 22rem; min-height: 48px; padding-inline: 1rem; }
+  #accounts h2, #payments h2, #verification h2, #contact h2 { font-size: clamp(1.65rem, 7vw, 2.15rem); line-height: 1.15; }
+  #accounts .grid { min-width: 0; }
+  #accounts aside { order: 1; }
+  #accounts article { order: 2; padding: 1rem; }
+  #accounts article > div { gap: 1.25rem; }
+  #accounts aside button { min-height: 48px; }
+  #payments .grid { grid-template-columns: minmax(0, 1fr); }
+  #payments .grid > div { min-width: 0; padding: 1rem; }
+  #payments .text-xl { font-size: clamp(1rem, 4.3vw, 1.25rem); overflow-wrap: anywhere; }
+  #contact form { padding: 1rem; }
+  #contact input, #contact textarea { width: 100%; max-width: 100%; }
+  footer { padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px)); }
 }
-.dark main > section:not(#home),
-.dark #payments,
-.dark #contact,
-.dark #verification {
-  background-color: #070c13 !important;
-  background-image: none !important;
-}
-.dark #accounts aside,
-.dark #accounts article,
-.dark #payments .rounded-lg,
-.dark #contact form,
-.dark #verification .rounded-lg {
-  background-color: #0b111b !important;
-  border-color: #263246 !important;
-}
-.dark .text-blue-700,
-.dark .text-blue-600 { color: #93c5fd !important; }
-.dark .bg-blue-50 { background-color: #111f35 !important; }
-.dark .hover\:bg-zinc-100:hover { background-color: #172235 !important; }
 
 @media (max-width: 360px) {
-  header nav { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
-  header nav ul { gap: 0.4rem !important; }
-  header nav a { white-space: nowrap; }
-  header nav > a { max-width: 88px !important; }
+  .site-header nav { gap: 0.5rem; padding-left: 0.65rem; padding-right: 0.65rem; }
+  .site-header nav > a { max-width: 10.5rem; white-space: normal; font-size: 0.78rem; line-height: 1.2; }
+  .site-header nav > div { gap: 0.35rem; }
+  .site-header nav button { min-width: 2.65rem; padding-inline: 0.5rem; }
+  #accounts article > div { grid-template-columns: minmax(0, 1fr); }
+}
+
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select { font-size: 16px !important; }
+  #home { min-height: -webkit-fill-available; }
 }
 
 @media (prefers-reduced-motion: reduce) {
