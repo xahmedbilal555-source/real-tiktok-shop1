@@ -112,6 +112,7 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [copiedNumber, setCopiedNumber] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedRegionName, setSelectedRegionName] = useState(regions[0].name);
   const [regionQuery, setRegionQuery] = useState("");
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "", website: "" });
@@ -157,6 +158,18 @@ export default function App() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActivePolicy(null);
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onEscape);
+    return () => window.removeEventListener("keydown", onEscape);
   }, []);
 
   useEffect(() => {
@@ -239,32 +252,55 @@ export default function App() {
 
   return (
     <div className="bg-[radial-gradient(circle_at_15%_15%,rgba(37,99,235,0.14),transparent_38%),radial-gradient(circle_at_85%_5%,rgba(30,64,175,0.12),transparent_35%),linear-gradient(to_bottom,#f8fafc,#ffffff,#eff6ff)] font-sans text-black">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/20 bg-black/85">
-        <nav aria-label="Main navigation" className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-3 py-3 text-sm sm:gap-4 sm:px-6 md:px-8">
-          <a href="#home" className="max-w-[112px] shrink-0 text-xs font-bold leading-tight tracking-wide text-white sm:max-w-none sm:text-base">
-            TikTok Verified Market
+      <header className="site-header fixed inset-x-0 top-0 z-50 border-b border-white/15 bg-black/90 backdrop-blur-md">
+        <nav aria-label="Main navigation" className="mx-auto flex min-h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 md:px-8">
+          <a href="#home" onClick={() => setIsMobileMenuOpen(false)} className="shrink-0 text-sm font-extrabold tracking-tight text-white sm:text-base">
+            TikTok <span className="text-sky-300">Verified Market</span>
           </a>
-          <div className="flex min-w-0 items-center gap-2 sm:gap-4">
-            <ul className="flex min-w-0 items-center gap-2 overflow-x-auto text-[10px] sm:gap-6 sm:text-sm">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <a className="text-white/85 transition hover:text-blue-300" href={item.href}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <ul className="hidden items-center gap-5 text-sm md:flex lg:gap-7">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <a className="rounded py-2 text-white/85 transition hover:text-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300" href={item.href}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
             </ul>
             <button
               type="button"
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
               aria-pressed={isDarkMode}
               onClick={() => setIsDarkMode((prev) => !prev)}
-              className="min-h-9 shrink-0 rounded-md border border-white/30 px-2.5 py-1.5 text-[11px] font-semibold text-white transition hover:border-blue-300 hover:text-blue-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300 sm:px-3 sm:text-xs"
+              className="min-h-11 min-w-11 rounded-lg border border-white/25 px-3 text-xs font-semibold text-white transition hover:border-sky-300 hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
             >
               {isDarkMode ? "Light" : "Dark"}
             </button>
+            <button
+              type="button"
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-white/25 text-white transition hover:border-sky-300 md:hidden"
+            >
+              <span className="text-xl leading-none" aria-hidden="true">{isMobileMenuOpen ? "×" : "☰"}</span>
+            </button>
           </div>
         </nav>
+        {isMobileMenuOpen && (
+          <div id="mobile-navigation" className="border-t border-white/10 bg-black px-4 pb-4 pt-2 shadow-xl md:hidden">
+            <ul className="mx-auto flex max-w-6xl flex-col gap-1">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <a className="flex min-h-12 items-center rounded-lg px-3 text-base font-medium text-white/90 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300" href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </header>
 
       <main>
